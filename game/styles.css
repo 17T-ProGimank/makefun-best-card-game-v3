@@ -1,0 +1,162 @@
+/* Tidepool Tussle — table, cards, heroes, overlays. All art is CSS + emoji. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  color: #eaf6ff;
+  background: #06283d;
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% 0%, #0e5a7d 0%, transparent 70%),
+    radial-gradient(ellipse 70% 45% at 50% 110%, #0a4a63 0%, transparent 70%);
+  overflow: hidden;
+}
+#app { height: 100vh; display: flex; flex-direction: column; }
+#topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 8px 18px;
+  background: rgba(3, 25, 40, 0.85);
+  border-bottom: 2px solid #1b7fa8;
+}
+.brand { font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #7fe3ff; text-shadow: 0 2px 0 #04344d; }
+#turn-banner { font-size: 17px; font-weight: 700; color: #ffd97a; flex: 1; text-align: center; }
+.top-actions { display: flex; gap: 8px; }
+button {
+  font-family: inherit; font-size: 15px; font-weight: 700;
+  color: #06283d; background: #ffd97a; border: none; border-radius: 8px;
+  padding: 8px 14px; cursor: pointer; box-shadow: 0 2px 0 #b98a1d;
+}
+button:hover { filter: brightness(1.08); }
+button:disabled { opacity: 0.45; cursor: default; }
+
+#table { flex: 1; display: flex; flex-direction: column; padding: 10px 18px; gap: 6px; min-height: 0; }
+.side { display: flex; flex-direction: column; gap: 6px; }
+.hero {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(3, 32, 48, 0.8); border: 2px solid #1b7fa8; border-radius: 12px;
+  padding: 6px 14px; max-width: 560px;
+}
+.hero.targetable { outline: 3px solid #ff5d5d; outline-offset: 2px; cursor: pointer; }
+.hero-face { font-size: 40px; line-height: 1; }
+.hero-info { flex: 1; }
+.hero-name { font-size: 16px; font-weight: 800; }
+.hero-tide { font-size: 15px; margin-top: 2px; }
+.tide-label { color: #9fd8ef; margin-right: 6px; }
+.tide-num { font-size: 24px; font-weight: 900; color: #7fe3ff; }
+.tide-max { color: #9fd8ef; }
+.tide-bar { height: 8px; background: #04283c; border-radius: 4px; margin-top: 3px; overflow: hidden; }
+.tide-fill { height: 100%; background: linear-gradient(90deg, #2ec5ff, #7fe3ff); width: 100%; transition: width 0.3s; }
+.enemy-hero .tide-fill { background: linear-gradient(90deg, #ff7a7a, #ffb27a); }
+.enemy-hero .tide-num { color: #ffb27a; }
+.hero-deck { font-size: 14px; color: #9fd8ef; font-weight: 700; }
+
+.hand { display: flex; gap: 8px; min-height: 132px; align-items: center; justify-content: center; }
+.enemy-hand { min-height: 44px; }
+.card-back {
+  width: 34px; height: 48px; border-radius: 6px;
+  background: repeating-linear-gradient(45deg, #b3541e 0 6px, #8a3d14 6px 12px);
+  border: 2px solid #ffd97a;
+}
+.board-row {
+  display: flex; gap: 10px; min-height: 138px; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.05); border: 2px dashed rgba(127, 227, 255, 0.35);
+  border-radius: 14px; padding: 6px;
+}
+.board-row .empty-note { color: rgba(234, 246, 255, 0.55); font-size: 14px; font-style: italic; }
+
+.card {
+  width: 104px; height: 132px; border-radius: 10px; position: relative;
+  background: linear-gradient(180deg, #fdfdf4, #e8e2c8);
+  color: #1c2b33; border: 3px solid #333; padding: 6px;
+  display: flex; flex-direction: column; cursor: default;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45); flex: none;
+  user-select: none;
+}
+.card .cost {
+  position: absolute; top: -8px; left: -8px; width: 28px; height: 28px; border-radius: 50%;
+  background: #2ec5ff; color: #fff; font-weight: 900; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.card .family { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.card .art { font-size: 40px; text-align: center; line-height: 1.15; margin: 2px 0; }
+.card .name { font-size: 13px; font-weight: 800; text-align: center; line-height: 1.1; }
+.card .keyword { font-size: 11px; font-weight: 700; text-align: center; color: #7a4a00; }
+.card .stats { margin-top: auto; display: flex; justify-content: space-between; font-size: 17px; font-weight: 900; }
+.card .atk { color: #c22727; }
+.card .hp { color: #1d7a1d; }
+.card.fam-wave { border-color: #2563eb; }
+.card.fam-shell { border-color: #b45309; }
+.card.fam-coral { border-color: #be123c; }
+.card.fam-kelp { border-color: #15803d; }
+.card .family.fam-wave { color: #2563eb; }
+.card .family.fam-shell { color: #b45309; }
+.card .family.fam-coral { color: #be123c; }
+.card .family.fam-kelp { color: #15803d; }
+
+.player-hand .card { cursor: pointer; transition: transform 0.12s; }
+.player-hand .card:hover { transform: translateY(-8px); }
+.player-hand .card.selected { transform: translateY(-12px); outline: 3px solid #ffd97a; }
+.player-hand .card.unaffordable { opacity: 0.55; }
+.player-hand .card.unaffordable:hover { transform: none; }
+.board-row .card { cursor: pointer; }
+.board-row .card.ready { outline: 3px solid #7dff8a; }
+.board-row .card.ready:hover { transform: translateY(-4px); }
+.board-row .card.selected { outline: 3px solid #ffd97a; transform: translateY(-6px); }
+.board-row .card.sick { filter: saturate(0.6); }
+.board-row .card.targetable { outline: 3px solid #ff5d5d; cursor: crosshair; }
+.board-row .card.just-played { animation: pop 0.25s ease-out; }
+@keyframes pop { from { transform: scale(1.25); } to { transform: scale(1); } }
+
+#midline { display: flex; align-items: center; gap: 14px; }
+.bubbles { display: flex; gap: 4px; font-size: 22px; min-width: 220px; }
+.bubbles .spent { opacity: 0.3; filter: grayscale(1); }
+#btn-end-turn { background: #7dff8a; box-shadow: 0 2px 0 #2c7a35; font-size: 16px; padding: 10px 20px; }
+#btn-power { background: #7fd4ff; box-shadow: 0 2px 0 #1f5f86; font-size: 15px; padding: 10px 16px; white-space: nowrap; }
+.power-status { font-size: 12px; color: #ffd97a; margin-top: 3px; }
+.power-status.spent { color: #8fb8cc; }
+.log {
+  flex: 1; height: 44px; overflow: hidden; font-size: 13px; line-height: 1.35;
+  color: #bfe6f7; background: rgba(3, 25, 40, 0.7); border-radius: 8px; padding: 4px 10px;
+}
+
+.overlay {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  background: rgba(2, 18, 30, 0.72); z-index: 10;
+}
+.overlay.show { display: flex; }
+.overlay-card {
+  background: linear-gradient(180deg, #0b4a68, #06283d);
+  border: 3px solid #ffd97a; border-radius: 18px; padding: 28px 34px; max-width: 640px;
+  text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+}
+.overlay-card h1 { font-size: 44px; letter-spacing: 2px; color: #7fe3ff; margin-bottom: 4px; }
+.overlay-card h2 { font-size: 20px; color: #ffd97a; margin-bottom: 14px; font-weight: 700; }
+.overlay-card p { font-size: 15px; line-height: 1.5; margin-bottom: 10px; color: #d9eefb; }
+.overlay-card .rules { text-align: left; font-size: 14.5px; line-height: 1.55; margin: 12px auto; max-width: 520px; }
+.overlay-card .rules li { margin-bottom: 5px; }
+.overlay-card .big-btn { font-size: 20px; padding: 12px 34px; margin-top: 8px; }
+.overlay-card .stat-line { font-size: 16px; font-weight: 700; color: #ffd97a; margin: 6px 0; }
+.win-title { color: #7dff8a !important; }
+.lose-title { color: #ff7a7a !important; }
+
+/* Tidepool banner (round 3 fix): one line under the top bar, carrying the
+   round's effect and the forecast for the next round. */
+.tidepool-banner {
+  background: linear-gradient(90deg, #0a4a63, #146b8a, #0a4a63);
+  border-bottom: 2px solid #1b7fa8;
+  color: #ffd97a; font-size: 15px; font-weight: 700; text-align: center;
+  padding: 6px 18px; letter-spacing: 0.3px;
+}
+.tidepool-banner.idle { color: #9fd8ef; font-weight: 600; }
+
+/* Card tooltip (round 3 fix): a small dark card that follows the cursor. */
+.tooltip {
+  position: fixed; z-index: 20; display: none; width: 232px;
+  background: rgba(3, 25, 40, 0.96); border: 2px solid #ffd97a; border-radius: 10px;
+  padding: 10px 12px; color: #eaf6ff; pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+}
+.tooltip.show { display: block; }
+.tooltip .tip-name { font-size: 15px; font-weight: 800; color: #7fe3ff; }
+.tooltip .tip-stats { font-size: 13px; font-weight: 700; color: #ffd97a; margin-top: 2px; }
+.tooltip .tip-rule { font-size: 13px; line-height: 1.45; color: #d9eefb; margin-top: 4px; }

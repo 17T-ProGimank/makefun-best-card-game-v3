@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidepool Tussle — a duel of the tidepools</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand">🌊 TIDEPOOL TUSSLE</div>
+    <div id="turn-banner">Your turn</div>
+    <div class="top-actions">
+      <button id="btn-rules" type="button">How to play</button>
+      <button id="btn-restart" type="button">Restart</button>
+    </div>
+  </header>
+  <div id="tidepool-banner" class="tidepool-banner idle">🌊 The tidepools shift every round — a new tidepool effect at the start of each turn.</div>
+
+  <main id="table">
+    <section id="enemy-side" class="side">
+      <div id="enemy-hero" class="hero enemy-hero">
+        <div class="hero-face">🦀</div>
+        <div class="hero-info">
+          <div class="hero-name">Pell, King of the Tidepools</div>
+          <div class="hero-tide"><span class="tide-label">Tide</span><span id="enemy-tide" class="tide-num">20</span><span class="tide-max">/ 20</span></div>
+          <div class="tide-bar"><div id="enemy-tide-fill" class="tide-fill"></div></div>
+          <div id="enemy-power" class="power-status">👑 Royal Blessing: ready</div>
+        </div>
+        <div class="hero-deck">Deck <span id="enemy-deck">21</span></div>
+      </div>
+      <div id="enemy-hand" class="hand enemy-hand" aria-label="Opponent hand"></div>
+      <div id="enemy-board" class="board-row" aria-label="Opponent creatures"></div>
+    </section>
+
+    <section id="midline">
+      <div id="bubbles" class="bubbles" aria-label="Bubbles"></div>
+      <button id="btn-power" type="button">🌊 Tide Surge (once)</button>
+      <button id="btn-power2" type="button">🪸 Reef Wall (once)</button>
+      <button id="btn-end-turn" type="button">End turn ⏎</button>
+      <div id="log" class="log" aria-label="Battle log"></div>
+    </section>
+
+    <section id="player-side" class="side">
+      <div id="player-board" class="board-row" aria-label="Your creatures"></div>
+      <div id="player-hand" class="hand player-hand" aria-label="Your hand"></div>
+      <div id="player-hero" class="hero player-hero">
+        <div class="hero-face">🐢</div>
+        <div class="hero-info">
+          <div class="hero-name">You — Guardian of the Pools</div>
+          <div class="hero-tide"><span class="tide-label">Tide</span><span id="player-tide" class="tide-num">20</span><span class="tide-max">/ 20</span></div>
+          <div class="tide-bar"><div id="player-tide-fill" class="tide-fill"></div></div>
+        </div>
+        <div class="hero-deck">Deck <span id="player-deck">21</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="tooltip" class="tooltip" aria-hidden="true"></div>
+
+<div id="overlay" class="overlay">
+  <div id="overlay-card" class="overlay-card"></div>
+</div>
+
+<script src="src/random.js"></script>
+<script src="src/cards.js"></script>
+<script src="src/ai.js"></script>
+<script src="src/game.js"></script>
+<script src="src/render.js"></script>
+<script src="src/shots.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>
